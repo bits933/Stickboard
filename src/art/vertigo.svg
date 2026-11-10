@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <circle cx="256" cy="256" r="254" fill="#1a201f"/>
+  <circle cx="256" cy="256" r="218" fill="#c9a2f6"/>
+  <g fill="none" stroke="#17201c" stroke-linecap="round" stroke-linejoin="round">
+    <path id="spiral" stroke-width="21" d="M216 183a60 60 0 1 0-61 80c28 0 47-18 47-41 0-19-14-32-32-32-14 0-25 10-25 22"/>
+    <use href="#spiral" transform="translate(512 0) scale(-1 1)"/>
+    <path stroke-width="27" d="M166 331c41-26 71 41 112 19 27-14 44-27 68-15"/>
+  </g>
+</svg>

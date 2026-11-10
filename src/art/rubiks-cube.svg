@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <g id="tiles">
+      <rect id="tile" x=".85" y=".85" width="8.3" height="8.3" rx=".8"/>
+      <use href="#tile" x="10"/><use href="#tile" x="20"/>
+      <use href="#tile" y="10"/><use href="#tile" x="10" y="10"/><use href="#tile" x="20" y="10"/>
+      <use href="#tile" y="20"/><use href="#tile" x="10" y="20"/><use href="#tile" x="20" y="20"/>
+    </g>
+    <radialGradient id="shadow">
+      <stop stop-color="#11131c" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#11131c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="37" cy="65" rx="34" ry="9" fill="url(#shadow)"/>
+  <path d="M40 9 68 22v32L40 67 12 54V22Z" fill="#202128" stroke="#202128" stroke-width="2" stroke-linejoin="round"/>
+  <use href="#tiles" transform="matrix(.9333 .4333 -.9333 .4333 40 9)" fill="#f4ecdb"/>
+  <use href="#tiles" transform="matrix(.9333 .4333 0 1.0667 12 22)" fill="#bf4143"/>
+  <use href="#tiles" transform="matrix(.9333 -.4333 0 1.0667 40 35)" fill="#426ac9"/>
+</svg>

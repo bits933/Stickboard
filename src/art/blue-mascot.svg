@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="ear" x1="10%" y1="90%" x2="88%" y2="8%">
+      <stop stop-color="#165aaf"/>
+      <stop offset=".44" stop-color="#4cacf2"/>
+      <stop offset=".75" stop-color="#82d8fb"/>
+      <stop offset="1" stop-color="#d4f6ff"/>
+    </linearGradient>
+    <linearGradient id="earShade" x1="10%" y1="95%" x2="80%" y2="12%">
+      <stop stop-color="#3da9ea"/>
+      <stop offset=".56" stop-color="#176cb9"/>
+      <stop offset="1" stop-color="#0c4288"/>
+    </linearGradient>
+    <linearGradient id="earLight" x1="10%" y1="95%" x2="80%" y2="12%">
+      <stop stop-color="#d3f6ff"/>
+      <stop offset=".68" stop-color="#7dcbf4"/>
+      <stop offset="1" stop-color="#348bd1"/>
+    </linearGradient>
+    <radialGradient id="head" cx="75%" cy="11%" r="89%" gradientTransform="translate(.055 0) scale(.94 1.19)">
+      <stop stop-color="#d1f6ff"/>
+      <stop offset=".23" stop-color="#77d9fc"/>
+      <stop offset=".52" stop-color="#36aef3"/>
+      <stop offset=".79" stop-color="#187bcc"/>
+      <stop offset="1" stop-color="#174994"/>
+    </radialGradient>
+    <linearGradient id="jaw" x1="12%" y1="94%" x2="86%" y2="9%">
+      <stop stop-color="#2059a8"/>
+      <stop offset=".44" stop-color="#1878cd"/>
+      <stop offset="1" stop-color="#3fb9f4"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="71%" cy="19%" r="91%">
+      <stop stop-color="#c2f0ff"/>
+      <stop offset=".3" stop-color="#73d0f8"/>
+      <stop offset=".68" stop-color="#3ca7ed"/>
+      <stop offset="1" stop-color="#1467b9"/>
+    </radialGradient>
+    <radialGradient id="socket">
+      <stop offset=".38" stop-color="#0d4f9b" stop-opacity=".86"/>
+      <stop offset=".73" stop-color="#125da8" stop-opacity=".54"/>
+      <stop offset="1" stop-color="#1765aa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="brow" cx="72%" cy="0" r="97%">
+      <stop stop-color="#dbf7ff" stop-opacity=".94"/>
+      <stop offset=".65" stop-color="#9ce4ff" stop-opacity=".36"/>
+      <stop offset="1" stop-color="#7bd7fc" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="muzzle" x1="6%" y1="88%" x2="80%" y2="21%">
+      <stop stop-color="#1b69b9"/>
+      <stop offset=".44" stop-color="#208bde"/>
+      <stop offset=".8" stop-color="#51c1f7"/>
+      <stop offset="1" stop-color="#a1e5ff"/>
+    </linearGradient>
+    <linearGradient id="nose" x1="10%" y1="88%" x2="80%" y2="12%">
+      <stop stop-color="#0b3d80"/>
+      <stop offset=".68" stop-color="#105aa8"/>
+      <stop offset="1" stop-color="#176dbd"/>
+    </linearGradient>
+  </defs>
+
+  <path fill="url(#ear)" d="M131 204c-23-25-55-46-87-42-27 3-43 25-42 53 1 31 20 55 51 61 24 4 56-4 78-15z"/>
+  <path fill="url(#earShade)" d="M112 218c-23-23-46-40-67-35-17 3-26 16-25 34 1 20 14 36 35 40 20 4 44-4 62-13z"/>
+  <path fill="url(#ear)" d="M384 210c18-22 54-48 84-50 28-1 44 19 42 49-2 37-25 63-56 67-27 4-53-7-73-17z"/>
+  <path fill="url(#earLight)" d="M401 223c21-21 48-41 69-41 16 0 24 12 23 30-1 24-17 41-38 44-20 3-41-4-56-14z"/>
+
+  <path fill="url(#head)" d="M104 154c4-35 20-59 48-71 25-11 68-14 109-14 42 0 84 5 111 19 30 15 43 41 42 74l-3 71c7 32 16 67 9 95-5 23-25 42-49 46-14 2-30 0-45 5-23 14-47 25-77 24-33-1-62-14-84-28-31 3-52-6-67-25-20-25-14-68-6-102z"/>
+  <path fill="url(#jaw)" d="M104 270c8 18 28 25 51 28l35 2c29-12 55-17 69-15 35 4 53 8 69 14 32-3 66-17 80-36 3 24 11 43 7 65-4 22-23 40-47 43-14 2-28-1-42 6-25 13-49 23-76 22-29-1-56-12-81-27-29 3-48-3-63-20-16-18-15-53-2-82z"/>
+  <path fill="url(#brow)" d="M128 180c8-39 33-60 68-61 29-1 48 13 60 34 10-21 39-42 73-38 28 3 51 21 57 56-19-25-39-32-61-29-26 3-52 18-66 44-14-25-36-41-61-42-25-1-51 13-70 36z"/>
+
+  <ellipse cx="182" cy="227" rx="64" ry="65" fill="url(#socket)"/>
+  <ellipse cx="337" cy="224" rx="63" ry="65" fill="url(#socket)"/>
+  <path fill="url(#orb)" d="M139 215c1-26 17-46 40-47 23-1 43 18 43 45 0 26-17 47-42 47-24 0-42-18-41-45z"/>
+  <path fill="url(#orb)" d="M291 212c1-27 18-46 42-46 24 1 42 20 42 45-1 27-17 46-42 47-25 1-43-19-42-46z"/>
+
+  <path fill="url(#socket)" d="M219 137c12-14 27-22 40-21 11 1 19 11 14 21-8 16-16 25-29 28-16 4-32-10-25-28z"/>
+  <path fill="url(#nose)" opacity=".75" d="M229 139c8-11 21-18 32-16 6 2 7 6 4 12-6 10-13 19-23 21-10 2-18-6-13-17z"/>
+
+  <ellipse cx="256" cy="353" rx="87" ry="72" fill="url(#socket)"/>
+  <path fill="url(#muzzle)" d="M219 268c8-16 22-23 38-23 20 0 37 11 42 30l20 88c5 25-4 52-23 66-13 10-25 13-44 13-23 0-42-7-52-21-12-16-12-36-7-59z"/>
+  <path fill="url(#orb)" d="M244 264c3-8 11-11 18-8 7 3 9 11 6 18-3 7-11 10-18 7-6-3-9-10-6-17z"/>
+  <path fill="url(#brow)" opacity=".8" d="M227 400c9 3 19 5 29 4 13-1 27-5 37-11-3 16-18 27-35 29-15 1-27-7-31-22z"/>
+  <path fill="url(#nose)" d="M235 391c5-8 29-12 38-6 5 4 3 11-4 16-8 5-23 6-31 2-5-2-6-8-3-12z"/>
+</svg>

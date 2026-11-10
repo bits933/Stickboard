@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <circle cx="256" cy="256" r="254" fill="#1a201f"/>
+  <circle cx="256" cy="256" r="218" fill="#ffd749"/>
+  <g fill="#17201c">
+    <path id="bolt" d="m173 122-66 82 49 1-16 60 79-88-51-1 17-54z"/>
+    <use href="#bolt" x="184"/>
+    <path d="M132 301c17 3 30 10 44 22 22 18 48 26 80 26s58-8 80-26c14-12 27-19 44-22-14 60-62 96-124 96s-110-36-124-96z"/>
+  </g>
+</svg>

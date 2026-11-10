@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11150f">
+    <meta name="description" content="An interactive board for peeling, placing, and arranging vinyl stickers.">
+    <title>Stickboard</title>
+    <link rel="icon" type="image/svg+xml" href="/src/art/static-face.svg">
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body>
+    <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-sticker" viewBox="0 0 24 24">
+        <path d="M4 7.5A3.5 3.5 0 0 1 7.5 4h9A3.5 3.5 0 0 1 20 7.5v4.6a3.5 3.5 0 0 1-1.025 2.475l-4.4 4.4A3.5 3.5 0 0 1 12.1 20H7.5A3.5 3.5 0 0 1 4 16.5z"/>
+        <path d="M12 20v-4a4 4 0 0 1 4-4h4"/>
+      </symbol>
+      <symbol id="icon-cube" viewBox="0 0 24 24">
+        <path d="m12 3 8 4.6v8.8L12 21l-8-4.6V7.6L12 3Zm0 18v-9m8-4.4L12 12 4 7.6"/>
+      </symbol>
+      <symbol id="icon-upload" viewBox="0 0 24 24">
+        <path d="M12 15V4m-4.5 4.5L12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+      </symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+      </symbol>
+      <symbol id="icon-pointer" viewBox="0 0 24 24">
+        <path d="m5 3 14 11-7 1-4 6L5 3Z"/>
+      </symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24">
+        <path d="M4 4h16v16H4zm0 8h16M12 4v16"/>
+      </symbol>
+      <symbol id="icon-remove" viewBox="0 0 24 24">
+        <path d="M5 7h14m-2 0-.65 12h-8.7L7 7m2.5 0V4h5v3M10.5 10.5v5m3-5v5"/>
+      </symbol>
+      <symbol id="icon-reset" viewBox="0 0 24 24">
+        <path d="M3 12a9 9 0 1 1 2.64 6.36M3 5v7h7"/>
+      </symbol>
+    </svg>
+    <main class="workspace">
+      <section class="stage" id="stage" aria-label="Interactive grid board">
+        <canvas id="board" aria-label="Grid board with stickers and objects" aria-describedby="board-help" tabindex="0">
+          This board needs a browser with WebGL 2 support.
+        </canvas>
+        <div class="stage-header">
+          <div class="board-label" aria-hidden="true">
+            <svg class="icon"><use href="#icon-grid"/></svg>
+            <span>Board <span class="board-index">01</span></span>
+          </div>
+          <button class="board-export" id="board-export" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg><span>Export PNG</span></button>
+        </div>
+        <div class="stage-footer">
+          <p class="board-help" id="board-help">
+            <svg class="icon" aria-hidden="true"><use href="#icon-pointer"/></svg>
+            <span>Drag to place <span class="hint-divider" aria-hidden="true">/</span> <span id="gesture-hint">Pull an edge to peel</span></span>
+          </p>
+          <p class="board-total"><span id="board-count">01</span> on board</p>
+        </div>
+        <p class="sr-only" id="board-status" role="status"></p>
+      </section>
+      <aside class="library" aria-labelledby="library-title">
+        <header class="brand">
+          <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+            <path fill="#b7e56a" d="M13.2 5.5 24 7.8a4.6 4.6 0 0 1 3.5 5.5l-1.2 5.4a4.6 4.6 0 0 1-1.9 2.8l-6.3 4.2a4.6 4.6 0 0 1-3.5.7l-5.2-1.1a4.6 4.6 0 0 1-3.5-5.5l2-10.7a4.6 4.6 0 0 1 5.3-3.6Z"/>
+            <path fill="#6e9b35" d="m14.5 26.4 1-5.1a3.4 3.4 0 0 1 4.1-2.7l6.4 1.3a4.6 4.6 0 0 1-1.6 1.6l-6.3 4.2a4.6 4.6 0 0 1-3.6.7Z"/>
+            <path fill="none" stroke="#d9f3a5" stroke-linecap="round" d="M10.6 11.8a3.1 3.1 0 0 1 3.7-2.4l6.1 1.3"/>
+            <path fill="none" stroke="#d9f3a5" stroke-linecap="round" d="M29.5 24.5v6m-3-3h6"/>
+          </svg>
+          <h1>Stickboard</h1>
+          <button class="light-toggle" id="light-toggle" type="button" aria-controls="light-settings" aria-expanded="false">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+            Light
+          </button>
+        </header>
+        <section class="light-settings" id="light-settings" aria-label="Board lighting" hidden>
+          <fieldset>
+            <legend>Pattern</legend>
+            <div class="light-patterns">
+              <label class="light-choice"><input type="radio" name="light-pattern" value="dappled" checked><span class="pattern-preview" data-pattern="dappled" aria-hidden="true"></span>Dappled</label>
+              <label class="light-choice"><input type="radio" name="light-pattern" value="window"><span class="pattern-preview" data-pattern="window" aria-hidden="true"></span>Window</label>
+              <label class="light-choice"><input type="radio" name="light-pattern" value="blinds"><span class="pattern-preview" data-pattern="blinds" aria-hidden="true"></span>Blinds</label>
+              <label class="light-choice"><input type="radio" name="light-pattern" value="spot"><span class="pattern-preview" data-pattern="spot" aria-hidden="true"></span>Spot</label>
+            </div>
+          </fieldset>
+          <div class="light-adjustments">
+            <div class="light-sliders">
+              <label for="light-intensity">Intensity</label>
+              <span id="light-intensity-value" aria-hidden="true">100%</span>
+              <input id="light-intensity" type="range" min="0" max="160" step="5" value="100" aria-valuetext="100%">
+              <label for="light-blur">Spread</label>
+              <span id="light-blur-value" aria-hidden="true">0%</span>
+              <input id="light-blur" type="range" min="0" max="100" step="10" value="0" aria-valuetext="0%">
+              <button class="light-reset" id="reset-light" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-reset"/></svg> Reset lights</button>
+            </div>
+            <fieldset>
+              <legend>Placement</legend>
+              <div class="light-placements">
+                <label class="light-choice"><input type="radio" name="light-placement" value="-1,1" aria-label="Top left"><span aria-hidden="true">↖</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="0,1" aria-label="Top"><span aria-hidden="true">↑</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="1,1" aria-label="Top right" checked><span aria-hidden="true">↗</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="-1,0" aria-label="Left"><span aria-hidden="true">←</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="0,0" aria-label="Center"><span aria-hidden="true">•</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="1,0" aria-label="Right"><span aria-hidden="true">→</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="-1,-1" aria-label="Bottom left"><span aria-hidden="true">↙</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="0,-1" aria-label="Bottom"><span aria-hidden="true">↓</span></label>
+                <label class="light-choice"><input type="radio" name="light-placement" value="1,-1" aria-label="Bottom right"><span aria-hidden="true">↘</span></label>
+              </div>
+            </fieldset>
+          </div>
+        </section>
+        <div class="library-body">
+          <div class="library-heading">
+            <h2 id="library-title">Library</h2>
+          </div>
+          <div class="library-tabs" role="tablist" aria-label="Asset type">
+            <button type="button" id="sticker-tab" role="tab" aria-selected="true" aria-controls="library-panel">
+              <svg class="icon" aria-hidden="true"><use href="#icon-sticker"/></svg>
+              Stickers
+            </button>
+            <button type="button" id="object-tab" role="tab" aria-selected="false" aria-controls="library-panel" tabindex="-1">
+              <svg class="icon" aria-hidden="true"><use href="#icon-cube"/></svg>
+              Objects
+            </button>
+          </div>
+          <div class="library-panel" id="library-panel" role="tabpanel" aria-labelledby="sticker-tab">
+            <div class="shelf-heading" aria-hidden="true">
+              <span>Available</span>
+              <span id="asset-count">10</span>
+            </div>
+            <div class="asset-list" id="asset-list"></div>
+            <div class="upload-area" id="upload-area">
+              <button type="button" class="upload" id="upload" aria-describedby="upload-description">
+                <span class="upload-icon"><svg class="icon" aria-hidden="true"><use href="#icon-upload"/></svg></span>
+                <span class="upload-copy">
+                  <strong id="upload-title">Upload PNG</strong>
+                  <span id="upload-description">Browse or drop a file here</span>
+                </span>
+                <svg class="icon upload-plus" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <input id="upload-input" type="file" accept="image/png,.png" aria-label="Upload a PNG sticker" hidden>
+              <p class="upload-status" id="upload-status" role="status"></p>
+            </div>
+          </div>
+          <div class="board-items" id="board-items" role="group" aria-label="Items on board"></div>
+        </div>
+        <div class="selection-actions" id="selection-actions" hidden>
+          <p class="selection-label" id="selection-name">Selection</p>
+          <div id="sticker-size-control" hidden>
+            <div class="sticker-setting">
+              <label for="sticker-size">Sticker size</label>
+              <span id="sticker-size-value" aria-hidden="true">100%</span>
+              <input id="sticker-size" type="range" min="50" max="200" step="5" value="100" aria-valuetext="100%">
+            </div>
+            <div class="sticker-setting">
+              <label for="sticker-angle">Rotation</label>
+              <div class="sticker-angle-actions">
+                <span id="sticker-angle-value" aria-hidden="true">0°</span>
+                <button id="reset-sticker-angle" type="button" aria-label="Reset rotation" title="Reset rotation">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-reset"/></svg>
+                </button>
+              </div>
+              <input id="sticker-angle" type="range" min="-180" max="180" step="1" value="0" aria-valuetext="0 degrees">
+            </div>
+          </div>
+          <div class="rotation-control" id="rotation-control" hidden>
+            <label><input id="rotation-toggle" type="checkbox" aria-describedby="rotation-help"> Show gizmo</label>
+            <label id="gizmo-mode-field" hidden>Mode
+              <select id="gizmo-mode" aria-describedby="rotation-help">
+                <option value="rotate">Rotate</option>
+                <option value="scale">Scale</option>
+              </select>
+            </label>
+            <p id="rotation-help" hidden>Drag a handle or press X, Y, or Z. Hold Shift to reverse.</p>
+            <div class="sticker-setting object-scale-setting">
+              <label for="object-scale">Proportional scale</label>
+              <span id="object-scale-value" aria-hidden="true">100%</span>
+              <input id="object-scale" type="range" min="25" max="300" step="any" value="100" aria-valuetext="100%">
+            </div>
+          </div>
+          <div class="selection-buttons">
+            <button type="button" id="peel-action"><svg class="icon" aria-hidden="true"><use href="#icon-sticker"/></svg> <span id="peel-label">Peel corner</span></button>
+            <button type="button" id="undo-transform" hidden disabled>Undo</button>
+            <button type="button" id="redo-transform" hidden disabled>Redo</button>
+            <button type="button" id="remove-action"><svg class="icon" aria-hidden="true"><use href="#icon-remove"/></svg> Remove</button>
+          </div>
+        </div>
+        <footer class="library-footer" role="group" aria-label="Board colors">
+          <button class="color-swatch" type="button" data-color="#5b843e" style="--swatch:#5b843e" aria-label="Board color #5b843e" aria-pressed="true"></button>
+          <button class="color-swatch" type="button" data-color="#a7303e" style="--swatch:#a7303e" aria-label="Board color #a7303e" aria-pressed="false"></button>
+          <button class="color-swatch" type="button" data-color="#3c61a1" style="--swatch:#3c61a1" aria-label="Board color #3c61a1" aria-pressed="false"></button>
+          <button class="color-swatch" type="button" data-color="#7755a0" style="--swatch:#7755a0" aria-label="Board color #7755a0" aria-pressed="false"></button>
+          <button class="color-swatch" type="button" data-color="#b8874b" style="--swatch:#b8874b" aria-label="Board color #b8874b" aria-pressed="false"></button>
+          <button class="color-swatch color-custom" id="custom-board-color" type="button" aria-label="Custom board color" aria-haspopup="dialog">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </footer>
+      </aside>
+    </main>
+    <dialog class="color-dialog" id="board-color-dialog" aria-labelledby="board-color-title">
+      <form method="dialog">
+        <h2 id="board-color-title">Custom color</h2>
+        <div class="color-wheel" id="color-wheel" role="group" aria-label="Color wheel" aria-describedby="color-wheel-help" tabindex="0" autofocus>
+          <span class="color-wheel-marker" aria-hidden="true"></span>
+        </div>
+        <p class="sr-only" id="color-wheel-help">Use the left and right arrow keys for hue and the up and down arrow keys for saturation.</p>
+        <div class="color-brightness">
+          <label for="board-brightness">Brightness</label>
+          <span id="board-brightness-value" aria-hidden="true">52%</span>
+          <input type="range" id="board-brightness" min="0" max="100" value="52" aria-valuetext="52%">
+        </div>
+        <div class="color-fields">
+          <input type="color" id="board-color-picker" aria-label="Choose board color" value="#5b843e">
+          <input type="text" id="board-color-hex" aria-label="Hex color" pattern="#?[0-9a-fA-F]{6}" maxlength="7" value="#5b843e" autocomplete="off" spellcheck="false" required>
+        </div>
+        <div class="color-dialog-actions">
+          <button type="button" id="cancel-board-color">Cancel</button>
+          <button type="submit">Apply</button>
+        </div>
+      </form>
+    </dialog>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
