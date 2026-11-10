@@ -95,6 +95,7 @@ function patternedTexture(pattern) {
 
 const gridFragment = /* glsl */ `
   uniform vec3 boardInk;
+  uniform float boardGridOpacity;
   uniform vec3 boardHotTint;
   uniform float boardKeyPower;
   uniform float boardGridProgress;
@@ -137,7 +138,7 @@ const gridSurface = /* glsl */ `
   float pigment = 1.0 + 0.049 * fibers + 0.020 * film;
   float hot = smoothstep(0.24, 0.92, boardSunlight) * 0.28 * min(boardKeyPower, 1.0);
   vec3 painted = mix(diffuseColor.rgb, boardHotTint, hot) * pigment;
-  diffuseColor.rgb = mix(painted, boardInk, ink);
+  diffuseColor.rgb = mix(painted, boardInk, ink * boardGridOpacity);
 `;
 
 const projectedLighting = THREE.ShaderChunk.lights_fragment_begin.replace(
@@ -238,6 +239,9 @@ export function createBoard(scene) {
   const shadowFootprint = { value: 0 };
   const shadowScale = { value: new THREE.Vector2() };
   const boardInk = { value: new THREE.Color('#edf1c5') };
+  const automaticInk = boardInk.value.clone();
+  const gridOpacity = { value: 1 };
+  let customGridColor = false;
   const boardHotTint = { value: new THREE.Color('#bcc972') };
   const warmWhite = new THREE.Color('#f4f0da');
 
@@ -284,7 +288,8 @@ export function createBoard(scene) {
         .replace('#include <lights_fragment_begin>', paintedGrid ? boardLighting : surface === 'vinyl' ? vinylLighting : itemLighting);
 
       if (paintedGrid) {
-        Object.assign(shader.uniforms, { boardInk, boardHotTint, boardKeyPower: keyPower, boardGridProgress: gridProgress, boardShadowScale: shadowScale });
+        Object.assign(shader.uniforms, { boardInk, boardHotTint, boardKeyPower: keyPower, boardGridProgress: gridProgress,
+          boardGridOpacity: gridOpacity, boardShadowScale: shadowScale });
         shader.fragmentShader = gridFragment + shader.fragmentShader.replace(
           '#include <shadowmap_pars_fragment>',
           '#include <shadowmap_pars_fragment>\n' + diffusedBoardShadow,
@@ -364,15 +369,28 @@ export function createBoard(scene) {
   function setColor(hex) {
     const base = material.color.set(hex);
     if (hex === '#5b843e') {
-      boardInk.value.set('#edf1c5');
+      automaticInk.set('#edf1c5');
       boardHotTint.value.set('#bcc972');
-      return;
+    } else {
+      const brightness = base.r * 0.2126 + base.g * 0.7152 + base.b * 0.0722;
+      automaticInk.copy(base);
+      if (brightness > 0.52) automaticInk.multiplyScalar(0.50);
+      else automaticInk.lerp(warmWhite, 0.76);
+      boardHotTint.value.copy(base).lerp(warmWhite, 0.21);
     }
-    const brightness = base.r * 0.2126 + base.g * 0.7152 + base.b * 0.0722;
-    boardInk.value.copy(base);
-    if (brightness > 0.52) boardInk.value.multiplyScalar(0.50);
-    else boardInk.value.lerp(warmWhite, 0.76);
-    boardHotTint.value.copy(base).lerp(warmWhite, 0.21);
+    if (!customGridColor) boardInk.value.copy(automaticInk);
+    return `#${boardInk.value.getHexString()}`;
+  }
+
+  function setGridColor(hex) {
+    customGridColor = hex !== null;
+    if (customGridColor) boardInk.value.set(hex);
+    else boardInk.value.copy(automaticInk);
+    return `#${boardInk.value.getHexString()}`;
+  }
+
+  function setGridOpacity(opacity) {
+    gridOpacity.value = THREE.MathUtils.clamp(opacity, 0, 1);
   }
 
   function resize(width, height) {
@@ -397,6 +415,6 @@ export function createBoard(scene) {
     );
   }
 
-  return { mesh, resize, setColor, driftLight, setLightPattern, setLightIntensity, setLightPlacement, setLightBlur, setStartup,
+  return { mesh, resize, setColor, setGridColor, setGridOpacity, driftLight, setLightPattern, setLightIntensity, setLightPlacement, setLightBlur, setStartup,
     lightMaterial: (material, vinyl = false) => applyLighting(material, vinyl ? 'vinyl' : 'prop') };
 }

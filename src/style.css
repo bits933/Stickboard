@@ -147,6 +147,52 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 
 .board-index { color: #a9c59a; }
+.board-settings { pointer-events: auto; }
+.board-label { cursor: pointer; }
+.board-label::-webkit-details-marker { display: none; }
+.board-label::after {
+  width: 6px;
+  height: 6px;
+  margin-inline-start: 2px;
+  border: solid var(--muted);
+  border-width: 0 1px 1px 0;
+  transform: translateY(-1px) rotate(45deg);
+  content: '';
+}
+.board-settings[open] .board-label::after { transform: translateY(2px) rotate(225deg); }
+.board-label:hover, .board-settings[open] .board-label { background: #26331f; }
+.board-settings-panel {
+  position: absolute;
+  z-index: 2;
+  inset: calc(100% + 8px) auto auto 0;
+  width: min(284px, 100%);
+  padding: 14px;
+  border: 1px solid #526145;
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 8px 24px #080d096b;
+  font-size: 12px;
+}
+.board-settings-panel fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.board-settings-panel legend { margin-bottom: 4px; padding: 0; color: var(--muted); }
+.grid-settings {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 9px 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.grid-color-controls { display: flex; align-items: center; gap: 6px; }
+.grid-color-controls > * { min-height: 32px; border: 1px solid var(--line); border-radius: 6px; background: var(--tile); }
+.grid-color-controls button { padding-inline: 8px; }
+.grid-color-controls button[aria-pressed="true"] { color: var(--accent); border-color: #b7e56a7a; }
+.grid-color-controls input { width: 40px; padding: 3px; cursor: pointer; }
+.grid-settings output { color: var(--accent); font: 11px var(--mono); }
+.grid-settings input[type="range"] { grid-column: 1 / -1; width: 100%; margin: 0; accent-color: var(--accent); }
 .board-help { font-size: 12px; letter-spacing: .01em; }
 .hint-divider { margin-inline: 4px; color: #a5b59b; }
 .board-total { white-space: nowrap; }
@@ -508,15 +554,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .selection-buttons button:disabled { opacity: .55; cursor: default; }
 .selection-buttons .icon { width: 15px; height: 15px; }
 
-.library-footer {
+.board-swatches {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  flex: 0 0 auto;
-  align-items: center;
   gap: 4px;
-  min-height: 56px;
-  padding: 6px var(--inset);
-  border-top: 1px solid var(--line);
 }
 
 .color-swatch {

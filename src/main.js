@@ -167,7 +167,7 @@ async function start() {
   rotation.setColors('#ff8581', '#91ebaa', '#80c8ff', '#fff3b1')
   const rotationHelper = rotation.getHelper()
   scene.add(rotationHelper)
-  const { resize: resizeBoard, setColor: setBoardColor, driftLight, lightMaterial,
+  const { resize: resizeBoard, setColor: setBoardColor, setGridColor, setGridOpacity, driftLight, lightMaterial,
     setLightPattern, setLightIntensity, setLightPlacement, setLightBlur, setStartup } = createBoard(scene)
   const colorDialog = byId('board-color-dialog')
   const physics = createPropPhysics()
@@ -325,7 +325,11 @@ async function start() {
     if (drifting || previousTime) scheduleFrame()
   }
 
-  const swatches = [...document.querySelectorAll('.color-swatch[data-color]')]
+  const boardSettings = byId('board-settings')
+  const swatches = [...boardSettings.querySelectorAll('[data-color]')]
+  const gridColor = byId('grid-color')
+  const gridAuto = byId('grid-color-auto')
+  const gridOpacity = byId('grid-opacity')
   const customSwatch = byId('custom-board-color')
   const colorPicker = byId('board-color-picker')
   const colorHex = byId('board-color-hex')
@@ -384,11 +388,34 @@ async function start() {
   })
   brightness.addEventListener('input', () => setDraftColor({ ...draftColor, v: brightness.valueAsNumber / 100 }))
 
-  function previewBoardColor(color) {
-    setBoardColor(color)
+  function repaintBoard() {
     paintDirty = true
     scheduleFrame()
   }
+
+  function previewBoardColor(color) {
+    gridColor.value = setBoardColor(color)
+    repaintBoard()
+  }
+
+  function chooseGridColor(color) {
+    gridColor.value = setGridColor(color)
+    gridAuto.setAttribute('aria-pressed', String(color === null))
+    repaintBoard()
+  }
+
+  gridColor.addEventListener('input', () => chooseGridColor(gridColor.value))
+  gridAuto.addEventListener('click', () => chooseGridColor(null))
+  gridOpacity.addEventListener('input', () => {
+    setGridOpacity(gridOpacity.valueAsNumber / 100)
+    const percentage = `${gridOpacity.value}%`
+    byId('grid-opacity-value').textContent = percentage
+    gridOpacity.setAttribute('aria-valuetext', percentage)
+    repaintBoard()
+  })
+  document.addEventListener('pointerdown', (event) => {
+    if (boardSettings.open && !colorDialog.open && !boardSettings.contains(event.target)) boardSettings.open = false
+  })
 
   function chooseBoardColor(color) {
     boardColor = color
@@ -1087,7 +1114,10 @@ async function start() {
     canvas.classList.remove('is-pointer-focused')
     if (colorDialog.open) return
     if (event.key === 'Escape') {
-      if (gesture || rotationPointer !== null) end(null, true)
+      if (boardSettings.open) {
+        boardSettings.open = false
+        boardSettings.querySelector('summary').focus()
+      } else if (gesture || rotationPointer !== null) end(null, true)
       else select(null)
       return
     }

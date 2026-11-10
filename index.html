@@ -43,10 +43,37 @@
           This board needs a browser with WebGL 2 support.
         </canvas>
         <div class="stage-header">
-          <div class="board-label" aria-hidden="true">
-            <svg class="icon"><use href="#icon-grid"/></svg>
-            <span>Board <span class="board-index">01</span></span>
-          </div>
+          <details class="board-settings" id="board-settings">
+            <summary class="board-label" aria-label="Board 01 settings">
+              <svg class="icon" aria-hidden="true"><use href="#icon-grid"/></svg>
+              <span>Board <span class="board-index">01</span></span>
+            </summary>
+            <div class="board-settings-panel">
+              <fieldset>
+                <legend>Board color</legend>
+                <div class="board-swatches">
+                  <button class="color-swatch" type="button" data-color="#5b843e" style="--swatch:#5b843e" aria-label="Board color #5b843e" aria-pressed="true"></button>
+                  <button class="color-swatch" type="button" data-color="#a7303e" style="--swatch:#a7303e" aria-label="Board color #a7303e" aria-pressed="false"></button>
+                  <button class="color-swatch" type="button" data-color="#3c61a1" style="--swatch:#3c61a1" aria-label="Board color #3c61a1" aria-pressed="false"></button>
+                  <button class="color-swatch" type="button" data-color="#7755a0" style="--swatch:#7755a0" aria-label="Board color #7755a0" aria-pressed="false"></button>
+                  <button class="color-swatch" type="button" data-color="#b8874b" style="--swatch:#b8874b" aria-label="Board color #b8874b" aria-pressed="false"></button>
+                  <button class="color-swatch color-custom" id="custom-board-color" type="button" aria-label="Custom board color" aria-haspopup="dialog">
+                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg>
+                  </button>
+                </div>
+              </fieldset>
+              <div class="grid-settings">
+                <label for="grid-color">Grid color</label>
+                <div class="grid-color-controls">
+                  <button id="grid-color-auto" type="button" aria-pressed="true">Auto</button>
+                  <input id="grid-color" type="color" value="#edf1c5">
+                </div>
+                <label for="grid-opacity">Grid opacity</label>
+                <output id="grid-opacity-value" for="grid-opacity" aria-hidden="true">100%</output>
+                <input id="grid-opacity" type="range" min="0" max="100" value="100" aria-valuetext="100%">
+              </div>
+            </div>
+          </details>
           <button class="board-export" id="board-export" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg><span>Export PNG</span></button>
         </div>
         <div class="stage-footer">
@@ -184,16 +211,6 @@
             <button type="button" id="remove-action"><svg class="icon" aria-hidden="true"><use href="#icon-remove"/></svg> Remove</button>
           </div>
         </div>
-        <footer class="library-footer" role="group" aria-label="Board colors">
-          <button class="color-swatch" type="button" data-color="#5b843e" style="--swatch:#5b843e" aria-label="Board color #5b843e" aria-pressed="true"></button>
-          <button class="color-swatch" type="button" data-color="#a7303e" style="--swatch:#a7303e" aria-label="Board color #a7303e" aria-pressed="false"></button>
-          <button class="color-swatch" type="button" data-color="#3c61a1" style="--swatch:#3c61a1" aria-label="Board color #3c61a1" aria-pressed="false"></button>
-          <button class="color-swatch" type="button" data-color="#7755a0" style="--swatch:#7755a0" aria-label="Board color #7755a0" aria-pressed="false"></button>
-          <button class="color-swatch" type="button" data-color="#b8874b" style="--swatch:#b8874b" aria-label="Board color #b8874b" aria-pressed="false"></button>
-          <button class="color-swatch color-custom" id="custom-board-color" type="button" aria-label="Custom board color" aria-haspopup="dialog">
-            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-        </footer>
       </aside>
     </main>
     <dialog class="color-dialog" id="board-color-dialog" aria-labelledby="board-color-title">
