@@ -30,6 +30,10 @@
       <symbol id="icon-grid" viewBox="0 0 24 24">
         <path d="M4 4h16v16H4zm0 8h16M12 4v16"/>
       </symbol>
+      <symbol id="icon-library" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2"/>
+        <path d="M15 5v14"/>
+      </symbol>
       <symbol id="icon-remove" viewBox="0 0 24 24">
         <path d="M5 7h14m-2 0-.65 12h-8.7L7 7m2.5 0V4h5v3M10.5 10.5v5m3-5v5"/>
       </symbol>
@@ -75,6 +79,9 @@
             </div>
           </details>
           <button class="board-export" id="board-export" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg><span>Export PNG</span></button>
+          <button class="library-toggle" id="show-library" type="button" aria-controls="library" aria-expanded="false" aria-label="Show library" title="Show library" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-library"/></svg>
+          </button>
         </div>
         <div class="stage-footer">
           <p class="board-help" id="board-help">
@@ -85,7 +92,7 @@
         </div>
         <p class="sr-only" id="board-status" role="status"></p>
       </section>
-      <aside class="library" aria-labelledby="library-title">
+      <aside class="library" id="library" aria-labelledby="library-title">
         <header class="brand">
           <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
             <path fill="#b7e56a" d="M13.2 5.5 24 7.8a4.6 4.6 0 0 1 3.5 5.5l-1.2 5.4a4.6 4.6 0 0 1-1.9 2.8l-6.3 4.2a4.6 4.6 0 0 1-3.5.7l-5.2-1.1a4.6 4.6 0 0 1-3.5-5.5l2-10.7a4.6 4.6 0 0 1 5.3-3.6Z"/>
@@ -97,6 +104,9 @@
           <button class="light-toggle" id="light-toggle" type="button" aria-controls="light-settings" aria-expanded="false">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
             Light
+          </button>
+          <button class="library-toggle" id="hide-library" type="button" aria-controls="library" aria-expanded="true" aria-label="Hide library" title="Hide library">
+            <svg class="icon" aria-hidden="true"><use href="#icon-library"/></svg>
           </button>
         </header>
         <section class="light-settings" id="light-settings" aria-label="Board lighting" hidden>

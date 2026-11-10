@@ -204,6 +204,22 @@ async function start() {
   let startupActive = !reduceMotion.matches
   let startupStart
   const workspace = stage.parentElement
+  const library = byId('library')
+  const showLibrary = byId('show-library')
+  const hideLibrary = byId('hide-library')
+
+  function setLibraryOpen(open) {
+    workspace.classList.toggle('is-library-collapsed', !open)
+    library.hidden = !open
+    showLibrary.hidden = open
+    showLibrary.setAttribute('aria-expanded', String(open))
+    hideLibrary.setAttribute('aria-expanded', String(open))
+    const focusTarget = open ? hideLibrary : showLibrary
+    focusTarget.focus()
+  }
+
+  showLibrary.addEventListener('click', () => setLibraryOpen(true))
+  hideLibrary.addEventListener('click', () => setLibraryOpen(false))
 
   if (startupActive) {
     setStartup(0, 0)
